@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "name": "aibrain",
+  "scope": "aibrain",
+  "description": "AIBrain runtime, memory schemas, Kiro integration, and CLI evolution.",
+  "path_markers": ["/AIBrain", "aibrain"],
+  "file_markers": ["brain/identity.md", "scripts/brain.sh"],
+  "priorities": ["backward compatibility", "safe writes", "local-first operation", "explainable retrieval"],
+  "rules": [
+    "Preserve brain.sh and installed Kiro artifact paths.",
+    "Keep the core Python-standard-library only.",
+    "Use append-only events for durable structured memory.",
+    "Treat Markdown knowledge as human-readable source material.",
+    "Never silently promote or delete user knowledge."
+  ],
+  "required_context": ["docs/V2-ARCHITECTURE.md", "brain/decisions/_index.md", "memory/active-task.md"],
+  "skill_preferences": ["memory-architect", "context-compiler", "conflict-resolver", "self-healing-reviewer"]
+}

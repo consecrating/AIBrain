@@ -1,230 +1,238 @@
-# 🧠 AIBrain
+# AIBrain v2
 
-**Persistent intelligence layer for Kiro** — solves the three problems that make AI coding assistants unreliable:
+**A local-first intelligence runtime for Kiro:** durable memory, ranked knowledge retrieval, compact context compilation, project profiles, dependency evidence, routable super skills, and self-healing diagnostics.
 
-1. **Memory Loss** — Kiro forgets decisions, preferences, and context after compaction
-2. **Poor Response Quality** — no curated knowledge base of proven patterns and your actual stack
-3. **Outdated Dependencies** — defaults to training-data libraries instead of current, battle-tested ones
+AIBrain keeps human-readable Markdown as the knowledge source while adding a standard-library Python runtime for safe writes and explainable retrieval. It does not require an embedding service, database, API key, or third-party Python package.
 
-AIBrain is NOT another prompt engineering repo. It's a **structured knowledge graph** that Kiro reads at session start and queries during work — making every session as informed as your best session.
+## What v2 solves
 
----
+| Failure mode | AIBrain v2 capability |
+|---|---|
+| Context compaction loses decisions | Append-only decisions and structured memory events |
+| The assistant rereads or regenerates known work | Ranked `recall` with file/record citations |
+| Too much context lowers response quality | Budgeted, profile-aware `context` packets |
+| Outdated packages are suggested | Approved/banned policy plus atomic PyPI/npm evidence feeds |
+| Repository conventions are mixed together | Auto-detected project profiles |
+| Skills are loaded without task fit | Metadata-based super-skill routing |
+| Knowledge contradicts itself | `doctor` conflict, schema, freshness, and reference checks |
+| Risky edits damage memory | Locked atomic writes and verifiable snapshots |
 
-## The Problem (in detail)
+## Core capabilities
 
-| Symptom | Root Cause | AIBrain Fix |
-|---------|-----------|-------------|
-| "I already told you to use X" | Context compaction deletes old turns | Persistent decision log survives any session |
-| Generates generic/bad code | No knowledge of YOUR patterns, stack, preferences | Curated pattern library with your proven solutions |
-| Suggests deprecated packages | Training data is stale; doesn't check current state | Live registry with pinned versions + freshness checks |
-| Forgets what files it changed | Memory is conversation-only | Change journal persisted to disk |
-| Re-debates settled decisions | Rationale lost in compaction | Decision records with WHY, never re-litigated |
-| Uses wrong coding style | No durable style enforcement | Executable style rules, not suggestions |
+### 1. Ranked local recall
 
----
+AIBrain indexes Markdown sections and active structured memories. Ranking combines phrase matches, token relevance, title matches, source authority, confidence, and scope.
+
+```bash
+./scripts/brain.sh index build
+./scripts/brain.sh recall "tenant isolation" --limit 8
+./scripts/brain.sh recall "http client" --kind stack --json
+```
+
+Every result identifies its source; no opaque vector store is required.
+
+### 2. Durable structured memory
+
+```bash
+./scripts/brain.sh remember \
+  "Use tenant-scoped query keys" \
+  --kind preference \
+  --scope goaaiseo \
+  --tags react,security \
+  --confidence 0.95 \
+  --source user
+
+./scripts/brain.sh forget mem-123456789abc \
+  --reason "Superseded by DEC-014"
+```
+
+Memories are append-only JSONL events. Forgetting writes a tombstone instead of deleting history. Duplicate active memories are detected by content hash.
+
+### 3. Compact context compiler
+
+```bash
+./scripts/brain.sh context \
+  "add a distributed crawl scheduler" \
+  --profile auto \
+  --budget 1800
+```
+
+The compiler detects the current project, includes its rules, retrieves relevant decisions/corrections/patterns, and stops at the requested approximate token budget.
+
+### 4. Project profiles
+
+```bash
+./scripts/brain.sh profile list
+./scripts/brain.sh profile auto /projects/sandbox/ScrapeToolAi
+./scripts/brain.sh profile show goaaiseo --json
+```
+
+Included profiles: `default`, `aibrain`, `goaaiseo`, and `scrapetoolai`. Profiles are plain JSON validated by `doctor`.
+
+### 5. Routable super skills
+
+```bash
+./scripts/brain.sh skills list
+./scripts/brain.sh skills route "resolve a dependency policy conflict"
+./scripts/brain.sh skills show conflict-resolver
+```
+
+Included super skills:
+
+- `memory-architect`
+- `dependency-intelligence`
+- `evidence-research`
+- `code-pattern-synthesizer`
+- `context-compiler`
+- `conflict-resolver`
+- `cross-repo-orchestrator`
+- `self-healing-reviewer`
+
+### 6. Local knowledge ingestion
+
+```bash
+./scripts/brain.sh ingest ./research.md \
+  --kind reference \
+  --scope goaaiseo \
+  --tags seo,evidence
+```
+
+Ingestion accepts local text artifacts, fingerprints them, records provenance, avoids duplicates, and adds them to ranked retrieval. Fetch external sources with an approved tool first; AIBrain never executes ingested content.
+
+### 7. Dependency evidence
+
+```bash
+./scripts/refresh.sh             # PyPI + npm
+./scripts/refresh.sh --python
+./scripts/refresh.sh --node --strict
+```
+
+Snapshots are written atomically under `feeds/` and include lookup status, current version, registry URL metadata, refresh time, and deprecation signals. Generated feeds remain local and are ignored by Git.
+
+### 8. Doctor and snapshots
+
+```bash
+./scripts/brain.sh doctor
+./scripts/brain.sh snapshot create before-migration
+./scripts/brain.sh snapshot list
+./scripts/brain.sh snapshot verify before-migration
+```
+
+Doctor checks required files, JSONL validity, duplicate/contradictory package policy, dangling patterns, profile and skill metadata, feed JSON/freshness, installed Kiro artifacts, and index freshness.
+
+Snapshots copy mutable brain state and record SHA-256 hashes. v2 intentionally provides verification rather than an automatic destructive restore.
+
+## Install
+
+```bash
+git clone https://github.com/consecrating/AIBrain.git
+cd AIBrain
+bash scripts/install.sh
+```
+
+The installer:
+
+1. requires Python 3.9 or newer;
+2. installs `.kiro/steering/aibrain.md` and `.kiro/skills/aibrain/SKILL.md`;
+3. transactionally publishes the steering, skill, and active-root pointer with rollback;
+4. initializes runtime files and the local index;
+5. runs the canonical doctor and fails if integrity errors remain.
+
+Override locations when needed:
+
+```bash
+KIRO_DIR=/custom/.kiro AIBRAIN_PYTHON=python3.12 bash scripts/install.sh
+```
+
+Root discovery order is `AIBRAIN_ROOT`, the active Kiro `.aibrain-path`, then the repository containing the runtime.
+
+## CLI reference
+
+```text
+status [--json]                       Brain and active-task state
+recall QUERY [filters]                Ranked cited retrieval
+decide TEXT [REASON] [options]        Architectural decision
+correct MISTAKE [FIX] [options]       Durable correction
+remember TEXT [metadata]              Structured memory event
+forget ID --reason TEXT               Memory tombstone
+ingest FILE [metadata]                Fingerprinted local reference
+context QUERY [profile/budget]        Compact context packet
+pattern add NAME [options]            Proven pattern registration
+stack add|ban PACKAGE [options]       Dependency policy
+profile list|show|auto                Project profile operations
+skills list|show|route                Super-skill operations
+index build|status                    Local search index
+snapshot create|list|verify           State snapshot operations
+journal [TEXT]                        Append or inspect journal
+next [ACTION]                         Read or set next action
+doctor / validate                     Integrity and freshness checks
+stats [--json]                        Knowledge statistics
+init                                  Initialize runtime state
+```
+
+Run `./scripts/brain.sh COMMAND --help` for exact options.
+
+## Backward compatibility
+
+AIBrain v2 preserves the v1 executable, installed paths, no-argument `status`, and all v1 positional commands:
+
+```bash
+./scripts/brain.sh decide "Use X over Y" "Reason"
+./scripts/brain.sh correct "What went wrong" "What to do instead"
+./scripts/brain.sh stack add httpx ">=0.25" "Modern async HTTP"
+./scripts/brain.sh stack ban requests "Sync only" httpx
+./scripts/brain.sh journal "Important observation"
+./scripts/brain.sh next "Implement the adapter"
+./scripts/brain.sh validate
+```
+
+Long options are additive; no existing positional form was removed.
 
 ## Architecture
 
-```
-AIBrain/
-├── brain/                          # The knowledge graph (the core)
-│   ├── identity.md                 # WHO: your role, stack, preferences, non-negotiables
-│   ├── decisions/                  # WHAT was decided and WHY (append-only log)
-│   │   ├── _index.md              # Decision log with dates + status
-│   │   └── *.md                   # Individual decision records
-│   ├── patterns/                   # HOW: proven code patterns from YOUR repos
-│   │   ├── _index.md              # Pattern catalog
-│   │   └── *.md                   # Pattern files (problem → solution → usage)
-│   ├── stack/                      # WITH WHAT: your approved technology stack
-│   │   ├── registry.md            # Master dependency registry (pinned versions)
-│   │   ├── banned.md              # Libraries/patterns explicitly rejected
-│   │   └── alternatives.md        # "If you'd suggest X, use Y instead"
-│   └── context/                    # WHERE: project-specific knowledge
-│       ├── repos.md               # All repos, their purpose, how they connect
-│       └── environments.md        # Runtime details, deploy targets, env vars
-│
-├── memory/                         # Session-persistent memory (survives compaction)
-│   ├── active-task.md             # Current goal + constraints + next action
-│   ├── journal.md                 # Append-only log of significant events
-│   ├── corrections.md            # Things the user corrected (never repeat)
-│   └── scratchpad.md              # Working memory for current session
-│
-├── rules/                          # Executable rules (not suggestions)
-│   ├── response-quality.md        # Rules for generating better responses
-│   ├── dependency-policy.md       # How to choose/validate packages
-│   ├── code-style.md             # Your actual coding conventions
-│   └── anti-patterns.md          # Specific mistakes to never make
-│
-├── feeds/                          # Live knowledge (refreshed periodically)
-│   ├── registry-snapshot.json     # Current versions of approved packages
-│   ├── deprecated.json            # Known deprecated packages to avoid
-│   └── update-feeds.sh           # Script to refresh from npm/pypi/github
-│
-├── scripts/                        # Automation
-│   ├── brain.sh                   # CLI: query, add, search the brain
-│   ├── learn.sh                   # Capture a learning from this session
-│   ├── refresh.sh                 # Update live feeds
-│   ├── validate.sh               # Check brain integrity
-│   └── install.sh                # Install AIBrain into any Kiro workspace
-│
-├── .kiro/                          # Kiro integration
-│   ├── steering/
-│   │   └── aibrain.md            # Always-on steering that loads the brain
-│   └── skills/
-│       └── aibrain/
-│           └── SKILL.md          # The skill that powers brain queries
-│
-└── tests/                          # Self-tests
-    └── validate-brain.sh          # Ensures no broken refs, no stale data
+```text
+scripts/brain.sh                  stable launcher
+scripts/aibrain.py                stdlib CLI and command contracts
+scripts/aibrain_core/             paths, safe I/O, index, doctor, profiles, skills, snapshots
+brain/
+  identity.md                     developer and stack identity
+  decisions/                      append-only architectural decisions
+  patterns/                       proven implementation patterns
+  profiles/                       repository-specific policies
+  skills/                         routable super-skill definitions
+  schemas/                        JSON schemas for structured records
+  stack/                          approved, banned, and alternative dependencies
+  references/                     locally ingested knowledge (ignored by default)
+memory/
+  active-task.md                  resumable task state
+  corrections.md                 durable behavioral corrections
+  journal.md                     append-only event journal
+  store.jsonl                    generated structured memory events
+feeds/                            generated package evidence
+.aibrain/                         generated index, locks, and snapshots
 ```
 
----
+Detailed design and compatibility rationale: [`docs/V2-ARCHITECTURE.md`](docs/V2-ARCHITECTURE.md).
 
-## How It Solves Each Problem
+## Security and privacy
 
-### 1. Memory Loss → Persistent Knowledge Graph
+- Generated structured memory, ingested references, feeds, indexes, locks, and snapshots are ignored by Git by default.
+- Deliberately promoted knowledge—decisions, corrections, active-task state, journal entries, patterns, and stack policy—is tracked and reviewable. Do not write secrets to those files.
+- Ingestion reads local files only and enforces a configurable size limit.
+- Fetched content is never executed by AIBrain.
+- Package refresh contacts only PyPI and npm registry endpoints derived from approved package names.
+- Review any runtime knowledge before deliberately committing it.
 
-**Before:** Kiro forgets your decisions after ~30 turns (compaction).
-**After:** Decisions live in `brain/decisions/`, read at session start.
+## Integration with SuperBrain
 
-```bash
-# Record a decision
-./scripts/brain.sh decide "Use Supabase not Firebase" \
-  --reason "RLS, pgvector, self-hostable, OSS" \
-  --context "goaaiseo database choice" \
-  --alternatives "Firebase (vendor lock), PlanetScale (no vector)"
+AIBrain v2 preserves SuperBrain's existing AIBrain contracts:
 
-# At session start, Kiro reads:
-# brain/decisions/_index.md → knows all settled decisions
-# memory/active-task.md → knows what was in progress
-# memory/corrections.md → knows what NOT to do again
-```
+- `scripts/install.sh` remains the installation entry point and validates before publishing integration files.
+- `scripts/brain.sh` remains executable.
+- `.kiro/skills/aibrain/SKILL.md` and `.kiro/steering/aibrain.md` retain their paths.
+- `AIBRAIN_ROOT=/projects/sandbox/AIBrain` remains supported.
 
-### 2. Poor Responses → Curated Pattern Library
-
-**Before:** Kiro generates generic boilerplate that doesn't match your codebase.
-**After:** It checks `brain/patterns/` first and uses YOUR proven solutions.
-
-```bash
-# Add a pattern you've proven works
-./scripts/brain.sh pattern add "api-error-handling" \
-  --problem "Consistent error responses across FastAPI services" \
-  --solution "patterns/api-error-handling.md" \
-  --repos "goaaiseo,goaaiseo-seo-adapter"
-
-# When Kiro generates API code, it checks patterns/ first
-# and uses YOUR error handling shape, not a random tutorial's
-```
-
-### 3. Outdated Deps → Live Registry + Policy
-
-**Before:** Kiro suggests `requests` (old) instead of `httpx` (current, async).
-**After:** Registry pins what to use; banned list blocks what to avoid.
-
-```markdown
-<!-- brain/stack/registry.md -->
-| Package | Version | Why | Replaces |
-|---------|---------|-----|----------|
-| httpx | >=0.25 | async, HTTP/2, modern | requests |
-| lxml | >=4.9 | fast XML/HTML parsing | html.parser |
-| pydantic | >=2.0 | validation + serialization | dataclasses for APIs |
-| ruff | >=0.4 | replaces flake8+isort+black | flake8, black, isort |
-
-<!-- brain/stack/banned.md -->
-| Package | Reason | Use Instead |
-|---------|--------|-------------|
-| requests | sync-only, no HTTP/2 | httpx |
-| flask | sync, no typing | FastAPI |
-| moment.js | deprecated, huge | date-fns or dayjs |
-| create-react-app | deprecated | Vite or Next.js |
-```
-
----
-
-## The Steering File (what makes it work)
-
-`AIBrain/.kiro/steering/aibrain.md` is an always-on file that instructs Kiro:
-
-1. **At session start:** Read `brain/identity.md` + `memory/active-task.md` + `brain/decisions/_index.md`
-2. **Before choosing a library:** Check `brain/stack/registry.md` and `brain/stack/banned.md`
-3. **Before writing code:** Check `brain/patterns/` for an existing pattern that applies
-4. **After any decision:** Append to `brain/decisions/_index.md`
-5. **When corrected:** Append to `memory/corrections.md` and classify for promotion
-6. **Before reporting done:** Verify against `memory/active-task.md` criteria
-
----
-
-## Quick Start
-
-```bash
-# Clone into your workspace
-git clone https://github.com/consecrating/AIBrain.git
-cd AIBrain
-
-# Initialize with your identity
-./scripts/brain.sh init
-
-# Install into active Kiro workspace
-./scripts/install.sh
-
-# Add your first decisions
-./scripts/brain.sh decide "Python 3.11+ for all services"
-./scripts/brain.sh decide "Use httpx not requests"
-./scripts/brain.sh decide "FastAPI for all Python APIs"
-
-# Add your stack
-./scripts/brain.sh stack add httpx ">=0.25" --replaces requests
-./scripts/brain.sh stack ban requests --reason "sync-only" --use httpx
-
-# Refresh live feeds
-./scripts/refresh.sh
-```
-
----
-
-## Integration with Existing Repos
-
-AIBrain connects to your workspace repos:
-
-```
-AIBrain (knowledge layer)
-   │
-   ├── informs → GOAAISEO (architecture decisions, API patterns)
-   ├── informs → goaaiseo-seo-adapter (coding patterns, dep choices)
-   ├── informs → ScrapeToolAi (stealth patterns, dep policy)
-   ├── powered by → Claude-Power (engineering skills read brain)
-   └── powered by → All-Skills (design skills read brand identity)
-```
-
----
-
-## Design Principles
-
-1. **Files > conversation** — anything important lives on disk, not in chat history
-2. **Append-only decisions** — never silently reverse; log reversals with rationale
-3. **Executable rules** — not "try to remember", but "check this file before acting"
-4. **Minimal always-on cost** — index files are tiny; detail loads on demand
-5. **Human-readable** — every file is Markdown you can read and edit directly
-6. **Self-validating** — `validate.sh` catches broken refs and stale entries
-
----
-
-## vs. Claude-Power's context-durability
-
-Claude-Power's `context-durability` skill handles **within-task** memory (one feature, one PR).
-AIBrain handles **cross-session, cross-project** memory (your entire development identity).
-
-| | context-durability | AIBrain |
-|---|---|---|
-| Scope | One task | All tasks, all repos |
-| Lifespan | Until task completes | Permanent |
-| Content | Task state, next action | Decisions, patterns, stack, identity |
-| Trigger | Long session | Every session |
-| Location | `.kiro/.memory/` | `AIBrain/brain/` |
-
-They complement each other: context-durability saves task progress, AIBrain saves everything else.
-
----
+SuperBrain v1 can install and verify AIBrain v2 without a manifest change. A future SuperBrain hardening should preserve the installer's exit status instead of filtering it through `grep ... || true`; AIBrain's own installer does propagate failures.
 
 ## License
 

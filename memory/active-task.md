@@ -5,39 +5,42 @@
 
 ## Current State
 
-- **Goal:** Build AIBrain as a super-powered intelligence layer for Kiro
-- **Status:** 🔨 In Progress — Core structure built, scripts needed
+- **Goal:** Upgrade AIBrain to v2 with durable structured memory, ranked recall, project profiles, knowledge ingestion, conflict/freshness checks, and routable super skills
+- **Status:** 🚀 Ready to Ship — implementation, profile-boundary hardening, and final verification complete
 - **Started:** 2026-08-23
 - **Last Updated:** 2026-08-23
 
 ## Constraints
 
-1. Must work in Kiro Web sandbox (no IDE features)
-2. Must survive context compaction (everything on disk)
-3. Must be installable into any workspace
-4. Must be super-powered — autonomous execution, live intelligence, self-healing
+1. Preserve all v1 CLI commands and positional forms
+2. Keep the core standard-library only and local-first
+3. Preserve Markdown knowledge as a human-readable source of truth
+4. Remain compatible with Kiro Web and SuperBrain's fixed install paths
+5. Use safe, atomic writes for mutable state
+6. Do not silently execute remote content or promote corrections globally
 
 ## Acceptance Criteria
 
-- [ ] Brain structure complete (identity, decisions, patterns, stack, context)
-- [ ] Memory system working (active-task, journal, corrections, scratchpad)
-- [ ] Rules engine complete (response quality, dep policy, code style, anti-patterns)
-- [ ] Live feeds system (registry snapshots, deprecated detection)
-- [ ] Scripts operational (brain.sh, learn.sh, refresh.sh, validate.sh, install.sh)
-- [ ] Kiro integration (steering + skill that reads the brain)
-- [ ] Super-powers: autonomous multi-step execution
-- [ ] Super-powers: live web intelligence (verify before suggesting)
-- [ ] Super-powers: self-healing (detect and fix own mistakes)
-- [ ] Super-powers: cross-repo orchestration
-- [ ] Pushed to GitHub
+- [x] Current architecture and compatibility contracts mapped
+- [x] Additive v2 architecture documented
+- [x] Stable `brain.sh` launcher backed by a stdlib Python intelligence core
+- [x] Ranked recall and compact context compilation operational
+- [x] Structured remember/forget/ingest memory store operational
+- [x] Project profile detection and super-skill routing operational
+- [x] Doctor detects conflicts, stale state, invalid schemas, and dangling references
+- [x] Refresh and install flows use atomic writes and propagate failures
+- [x] Kiro skill/steering and README document implemented behavior
+- [x] Focused command verification passes
+- [ ] Feature branch pushed with a reviewable pull request
 
 ## Next Action
 
-Build the super-power scripts and rules engine
+Stage the reviewed files explicitly, commit the v2 upgrade, push `feat/aibrain-v2`, and open the pull request
 
 ## Decisions Made
 
-- AIBrain is a repo, not just config files (portable, versioned, shareable)
-- Complements Claude-Power's context-durability (that's per-task, this is cross-session)
-- Markdown-first for human readability + AI parsability
-- Scripts use bash for zero-dep execution
+- Retain `brain.sh` as the public entry point and delegate to `scripts/aibrain.py`
+- Use deterministic weighted lexical retrieval instead of a mandatory embedding dependency
+- Store structured memories as append-only JSONL events with tombstones
+- Keep local file ingestion in core; fetch externally, then ingest
+- Treat SuperBrain paths and installed Kiro artifact names as public contracts

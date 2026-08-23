@@ -1,15 +1,25 @@
-# Session-specific working memory (don't commit transient state)
+# Generated runtime index, locks, and snapshots
+.aibrain/
+
+# Local structured memory and ingested provenance
+memory/store.jsonl
+memory/ingested.jsonl
 memory/scratchpad.md
 memory/learnings-inbox.md
+brain/references/*.md
+!brain/references/README.md
 
-# Feeds are generated (refresh.sh creates them)
+# Generated live feeds
 feeds/*.json
+!feeds/README.md
 
-# OS
+# Python
+__pycache__/
+*.py[cod]
+
+# OS and editors
 .DS_Store
 Thumbs.db
-
-# Editor
 *.swp
 *.swo
 *~

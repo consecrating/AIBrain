@@ -13,6 +13,7 @@
 | 006 | 2024-08 | stdlib-only core for gsa adapter | ✅ Active | Zero dep install for normalization layer |
 | 007 | 2024-08 | 3-tier fetch escalation (HTTP→Stealth→Playwright) | ✅ Active | ScrapeToolAi — balance speed vs. bypass |
 | 008 | 2024-08 | Kiro skills split: All-Skills (design) + Claude-Power (engineering) | ✅ Active | Separation of concerns, independent updates |
+| 009 | 2026-08-23 | AIBrain v2 uses a stdlib Python core behind the stable brain.sh launcher | ✅ Active | Enables safe structured memory, ranked retrieval, schemas, and atomic writes without adding runtime dependencies |
 
 ## Decision Template
 

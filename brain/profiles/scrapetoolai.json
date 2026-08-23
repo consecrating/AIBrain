@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "name": "scrapetoolai",
+  "scope": "scrapetoolai",
+  "description": "ScrapeToolAi escalation, extraction, and organizer workflows.",
+  "path_markers": ["/ScrapeToolAi", "scrapetoolai"],
+  "file_markers": ["scrapetoolai/fetchers/escalation.py"],
+  "priorities": ["fastest viable fetch tier", "respectful crawling", "structured provenance", "recoverable failures"],
+  "rules": [
+    "Try HTTP before stealth browser escalation.",
+    "Use timeouts, bounded retries, and domain-level tier caching.",
+    "Keep extraction provenance with the resulting data.",
+    "Do not bypass access controls or scrape private data without authorization."
+  ],
+  "required_context": ["brain/context/repos.md", "rules/anti-patterns.md"],
+  "skill_preferences": ["evidence-research", "code-pattern-synthesizer", "self-healing-reviewer"]
+}

@@ -1,55 +1,37 @@
 ---
 inclusion: always
-description: AIBrain — persistent intelligence layer. Prevents memory loss, ensures response quality, blocks outdated dependencies.
+description: AIBrain v2 — persistent memory, ranked context, dependency evidence, profiles, skills, and self-healing diagnostics.
 ---
 
-# AIBrain Protocol
+# AIBrain v2 Protocol
 
-You have a persistent brain at `/projects/sandbox/AIBrain`. It survives sessions.
+Resolve the brain from `AIBRAIN_ROOT`, the active Kiro `.aibrain-path`, or the repository containing `scripts/brain.sh`.
 
-## At Session Start (ALWAYS do this)
+## Session start
 
-1. Read `AIBrain/memory/active-task.md` — know what was in progress
-2. Read `AIBrain/memory/corrections.md` — know what NOT to repeat
-3. Skim `AIBrain/brain/decisions/_index.md` — know what's settled
+1. Run `scripts/brain.sh status`.
+2. Read `brain/identity.md`, `memory/active-task.md`, and `memory/corrections.md`.
+3. Compile task context with `scripts/brain.sh context "<task>" --profile auto` for non-trivial work.
+4. If status reports a stale index, run `scripts/brain.sh index build`.
 
-## Before Suggesting ANY Package/Library
+## Before dependencies
 
-1. Check `AIBrain/brain/stack/registry.md` — is it approved? Use that version.
-2. Check `AIBrain/brain/stack/banned.md` — is it banned? Use the alternative.
-3. Check `AIBrain/brain/stack/alternatives.md` — is there a better modern option?
-4. If not in any list: verify on the web that it's current + maintained before suggesting
+Check `brain/stack/registry.md`, `banned.md`, and `alternatives.md`, then inspect current feed evidence. Verify unlisted packages against an authoritative source before approval.
 
-## Before Writing Code
+## Before code
 
-1. Check `AIBrain/brain/patterns/` — does a proven pattern exist for this?
-2. Follow `AIBrain/rules/code-style.md` — types, async, naming conventions
-3. Scan `AIBrain/rules/anti-patterns.md` — don't make the Fatal Fifteen mistakes
-4. Apply `AIBrain/rules/response-quality.md` — be SUPER-POWERED, not basic
+Route the task with `scripts/brain.sh skills route "<task>"`, inspect relevant local patterns, and follow the detected project profile.
 
-## After Any Decision
+## Durable writes
 
-Append to `AIBrain/brain/decisions/_index.md` or run:
-```bash
-/projects/sandbox/AIBrain/scripts/brain.sh decide "the decision" "the reason"
-```
+- Fact or preference: `brain.sh remember ...`
+- Architectural commitment: `brain.sh decide ...`
+- User correction: `brain.sh correct ...`
+- Proven implementation: `brain.sh pattern add ...`
+- Local research artifact: `brain.sh ingest FILE ...`
 
-## When Corrected by the User
+Use the CLI instead of editing structured stores directly; it provides locking, provenance, escaping, and atomic writes.
 
-Append to `AIBrain/memory/corrections.md` or run:
-```bash
-/projects/sandbox/AIBrain/scripts/brain.sh correct "what went wrong" "what to do instead"
-```
+## Completion
 
-## Before Reporting Done
-
-Check `AIBrain/memory/active-task.md` acceptance criteria — every one must be verified.
-
-## The Quality Bar
-
-Every response must be:
-- **Complete** — no `...` or `TODO` or missing pieces
-- **Current** — only actively maintained packages/patterns
-- **Correct** — verified it actually works (run it, test it)
-- **Contextual** — uses OUR patterns, not generic ones
-- **Super-powered** — anticipates next needs, connects dots, saves hours
+Run `scripts/brain.sh doctor`, verify the acceptance criteria in `memory/active-task.md`, and report anything that remains unverified.

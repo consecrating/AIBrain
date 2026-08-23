@@ -1,108 +1,64 @@
 ---
 name: aibrain
-description: "Super-powered intelligence layer — persistent memory, live dependency verification, proven patterns, cross-repo orchestration, self-healing. Activate when: starting a session, choosing packages, writing code patterns, making architectural decisions, or when previous responses were subpar. Provides recall, decide, correct, validate commands via brain.sh."
+description: "AIBrain v2 local intelligence runtime — durable structured memory, ranked recall, compact context packs, dependency evidence, project profiles, super-skill routing, snapshots, and self-healing diagnostics. Activate for session startup, knowledge retrieval, package selection, architecture decisions, cross-repo work, corrections, or context recovery."
 metadata:
-  version: "1.0"
+  version: "2.0"
   author: consecrating
 ---
 
-# AIBrain — Super-Powered Intelligence
+# AIBrain v2
 
-You have a persistent intelligence layer that makes you dramatically better than
-a vanilla AI assistant. Use it.
+AIBrain is a local-first intelligence runtime. Its core uses only Python's standard library and keeps every result inspectable and attributable.
 
-## Super Powers
-
-### 🧠 Power 1: Perfect Memory
-You never forget. Decisions, corrections, patterns, and context live on disk.
-```bash
-# Query the brain
-/projects/sandbox/AIBrain/scripts/brain.sh recall "topic"
-/projects/sandbox/AIBrain/scripts/brain.sh status
-```
-
-### 📦 Power 2: Live Dependency Intelligence
-You never suggest outdated packages. The registry is YOUR truth.
-```bash
-# Check before suggesting
-cat /projects/sandbox/AIBrain/brain/stack/registry.md    # approved
-cat /projects/sandbox/AIBrain/brain/stack/banned.md      # never suggest
-cat /projects/sandbox/AIBrain/brain/stack/alternatives.md # redirections
-```
-
-### 🔧 Power 3: Pattern Reuse
-You never reinvent what already works. Proven patterns first.
-```bash
-cat /projects/sandbox/AIBrain/brain/patterns/_index.md
-```
-
-### ⚡ Power 4: Autonomous Multi-Step Execution
-You can chain complex operations across all repos:
-- Scrape with ScrapeToolAi → analyze with gsa → feed GOAAISEO
-- Search the web for current info → verify → apply
-- Read patterns → generate code → validate → commit
-
-### 🔄 Power 5: Self-Healing
-When something goes wrong:
-1. Record the mistake: `brain.sh correct "what happened"`
-2. Check corrections before repeating: read `memory/corrections.md`
-3. Validate your own output against the quality rules
-
-### 🌐 Power 6: Live Web Intelligence
-Before suggesting ANYTHING from training data:
-- Web search for current version/status
-- Verify the package isn't deprecated
-- Check if there's a newer/better alternative
-- Validate API endpoints still exist
-
-### 🔗 Power 7: Cross-Repo Orchestration
-You understand how all 6 repos connect:
-```bash
-cat /projects/sandbox/AIBrain/brain/context/repos.md
-```
-And can execute operations that span multiple repos in one flow.
-
-## When to Activate
-
-- ✅ Starting any session (load context)
-- ✅ Before suggesting a package
-- ✅ Before generating non-trivial code
-- ✅ After being corrected
-- ✅ When a response was rejected
-- ✅ When making a decision with long-term impact
-- ✅ Before claiming "done"
-
-## Command Reference
+## Start here
 
 ```bash
-BRAIN=/projects/sandbox/AIBrain/scripts/brain.sh
-LEARN=/projects/sandbox/AIBrain/scripts/learn.sh
-
-$BRAIN status                    # health + active task
-$BRAIN recall "authentication"   # search all knowledge
-$BRAIN decide "Use X over Y"    # record decision
-$BRAIN correct "bad thing"      # never do again
-$BRAIN stack add pkg version    # approve a package
-$BRAIN stack ban pkg reason     # ban a package
-$BRAIN journal "important note" # append to log
-$BRAIN next "next thing to do"  # set next action
-$BRAIN validate                 # check integrity
-$BRAIN stats                    # knowledge stats
-
-$LEARN add "lesson learned"     # quick capture
-$LEARN list                     # review inbox
-$LEARN promote 3                # promote to permanent
+KIRO_ROOT="${KIRO_DIR:-/projects/.kiro}"
+BRAIN_ROOT="${AIBRAIN_ROOT:-$(cat "$KIRO_ROOT/.aibrain-path" 2>/dev/null)}"
+BRAIN="$BRAIN_ROOT/scripts/brain.sh"
+$BRAIN status
+$BRAIN context "the current task" --profile auto
+$BRAIN skills route "the current task"
 ```
 
-## The Contract
+## Durable knowledge
 
-1. I will NEVER suggest a banned package
-2. I will ALWAYS check the registry before recommending dependencies
-3. I will ALWAYS check patterns before writing new code
-4. I will NEVER repeat a recorded correction
-5. I will ALWAYS record significant decisions
-6. I will ALWAYS verify current state before claiming something works
-7. I will write complete, typed, production-quality code
-8. I will anticipate needs 2-3 steps ahead
-9. I will connect dots across repositories
-10. I will be SUPER-POWERED — not basic
+```bash
+$BRAIN remember "Use tenant-scoped query keys" --kind preference --scope goaaiseo --tags react,security
+$BRAIN forget mem-123456789abc --reason "Superseded by DEC-014"
+$BRAIN decide "Keep the adapter core stdlib-only" --reason "Portable ingestion" --context "gsa"
+$BRAIN correct "Used an unverified package" --do-instead "Check registry evidence first" --scope always
+$BRAIN ingest ./research.md --kind reference --scope goaaiseo --tags seo,evidence
+```
+
+## Retrieval and routing
+
+```bash
+$BRAIN recall "tenant isolation" --limit 8
+$BRAIN context "add a crawl scheduler" --profile auto --budget 1800
+$BRAIN profile auto /projects/sandbox/ScrapeToolAi
+$BRAIN skills route "resolve dependency conflict"
+$BRAIN index build
+```
+
+## Health and recovery
+
+```bash
+$BRAIN doctor
+$BRAIN snapshot create before-migration
+$BRAIN snapshot verify before-migration
+$BRAIN stats --json
+```
+
+## Compatibility
+
+All v1 commands and positional forms remain supported: `status`, `recall`, `decide`, `correct`, `stack add`, `stack ban`, `journal`, `next`, `validate`, and `stats`.
+
+## Operating contract
+
+1. Retrieve before regenerating.
+2. Cite the source of recalled knowledge.
+3. Keep time-sensitive facts scoped and expiring.
+4. Never silently delete or promote knowledge.
+5. Resolve contradictions explicitly and preserve history.
+6. Run doctor before claiming the brain is healthy.

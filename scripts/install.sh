@@ -1,22 +1,10 @@
 #!/usr/bin/env bash
-# ---------------------------------------------------------------------------
-# install.sh — Install AIBrain into the active Kiro workspace
-#
-# This installs:
-#   1. The AIBrain steering file (always-on) → /projects/.kiro/steering/
-#   2. The AIBrain skill → /projects/.kiro/skills/aibrain/
-#   3. Symlinks the brain to a discoverable location
-#
-# Usage:
-#   ./scripts/install.sh
-#   KIRO_DIR=/custom/path ./scripts/install.sh
-# ---------------------------------------------------------------------------
+# Install AIBrain v2 into the active Kiro configuration.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AIBRAIN_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-# Detect Kiro config directory
 if [ -n "${KIRO_DIR:-}" ]; then
     TARGET="$KIRO_DIR"
 elif [ -d "/projects/.kiro" ]; then
@@ -27,41 +15,30 @@ else
     TARGET="/projects/.kiro"
 fi
 
-echo "🧠 Installing AIBrain into: $TARGET"
-echo ""
+PYTHON="${AIBRAIN_PYTHON:-$(command -v python3 || command -v python || true)}"
+if [ -z "$PYTHON" ]; then
+    echo "error: AIBrain v2 requires Python 3.9+" >&2
+    exit 1
+fi
+if ! "$PYTHON" -c 'import sys; raise SystemExit(sys.version_info < (3, 9))'; then
+    echo "error: AIBrain v2 requires Python 3.9+" >&2
+    exit 1
+fi
 
-# 1. Install steering file
-mkdir -p "$TARGET/steering"
-cp "$AIBRAIN_DIR/.kiro/steering/aibrain.md" "$TARGET/steering/aibrain.md"
-echo "✓ Steering: $TARGET/steering/aibrain.md"
+chmod +x "$AIBRAIN_DIR/scripts/"*.sh "$AIBRAIN_DIR/scripts/"*.py
 
-# 2. Install skill
-mkdir -p "$TARGET/skills/aibrain"
-cp "$AIBRAIN_DIR/.kiro/skills/aibrain/SKILL.md" "$TARGET/skills/aibrain/SKILL.md"
-echo "✓ Skill: $TARGET/skills/aibrain/SKILL.md"
+# Validate and initialize the source before replacing installed integration files.
+AIBRAIN_ROOT="$AIBRAIN_DIR" AIBRAIN_PYTHON="$PYTHON" "$AIBRAIN_DIR/scripts/brain.sh" init >/dev/null
+AIBRAIN_ROOT="$AIBRAIN_DIR" AIBRAIN_PYTHON="$PYTHON" "$AIBRAIN_DIR/scripts/brain.sh" doctor >/dev/null
 
-# 3. Create a pointer so scripts know where the brain is
-echo "$AIBRAIN_DIR" > "$TARGET/.aibrain-path"
-echo "✓ Brain path: $TARGET/.aibrain-path → $AIBRAIN_DIR"
+printf '✓ Installing AIBrain v2 into %s\n' "$TARGET"
+AIBRAIN_PYTHON="$PYTHON" "$PYTHON" "$AIBRAIN_DIR/scripts/install_integration.py" \
+    --root "$AIBRAIN_DIR" \
+    --target "$TARGET"
 
-# 4. Make all scripts executable
-chmod +x "$AIBRAIN_DIR/scripts/"*.sh
-echo "✓ Scripts: executable"
+# Verify the installed pointer resolves and the source remains healthy.
+KIRO_DIR="$TARGET" AIBRAIN_PYTHON="$PYTHON" "$AIBRAIN_DIR/scripts/brain.sh" doctor
 
-# 5. Quick validation
-"$AIBRAIN_DIR/scripts/brain.sh" validate && echo "" && echo "✅ AIBrain installed and validated" || echo "⚠️  Installed with warnings"
-
-echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "AIBrain is now active. It will:"
-echo "  • Load identity + active task at session start"
-echo "  • Check banned/approved packages before suggesting deps"
-echo "  • Use your proven patterns before generating new code"
-echo "  • Never repeat corrected mistakes"
-echo "  • Record decisions automatically"
-echo ""
-echo "Quick commands:"
-echo "  $AIBRAIN_DIR/scripts/brain.sh status"
-echo "  $AIBRAIN_DIR/scripts/brain.sh recall <topic>"
-echo "  $AIBRAIN_DIR/scripts/brain.sh decide <decision>"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+printf '\n✅ AIBrain v2 installed successfully.\n'
+printf 'Brain: %s\n' "$AIBRAIN_DIR"
+printf 'CLI:   %s/scripts/brain.sh\n' "$AIBRAIN_DIR"

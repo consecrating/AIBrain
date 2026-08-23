@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "name": "goaaiseo",
+  "scope": "goaaiseo",
+  "description": "GOAAISEO closed-loop, multi-tenant SEO operating system.",
+  "path_markers": ["/goaaiseo", "goaaiseo-seo-adapter"],
+  "file_markers": ["docs/BLUEPRINT.md", "src/gsa"],
+  "priorities": ["ground-truth evidence", "multi-tenant isolation", "explainable actions", "measured outcomes"],
+  "rules": [
+    "Preserve site_id at every data boundary.",
+    "Route normalized analysis through GraphNode, IssueRecord, and ActionCandidate contracts.",
+    "Confidence-gate autonomous actions.",
+    "Do not add dependencies to the gsa core without an explicit decision.",
+    "Keep write-back attributable and reversible."
+  ],
+  "required_context": ["brain/context/repos.md", "brain/patterns/_index.md"],
+  "skill_preferences": ["cross-repo-orchestrator", "evidence-research", "dependency-intelligence"]
+}

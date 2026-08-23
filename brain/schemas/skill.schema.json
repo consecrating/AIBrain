@@ -1,0 +1,13 @@
+{
+  "title": "AIBrain routable super-skill metadata",
+  "type": "object",
+  "required": ["name", "description", "version", "triggers", "capabilities"],
+  "properties": {
+    "name": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+    "description": {"type": "string"},
+    "version": {"type": "string"},
+    "triggers": {"type": "array", "items": {"type": "string"}},
+    "capabilities": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

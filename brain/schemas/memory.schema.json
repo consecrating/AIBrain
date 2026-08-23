@@ -1,0 +1,25 @@
+{
+  "title": "AIBrain memory event",
+  "type": "object",
+  "required": ["schema_version", "event", "id", "created_at"],
+  "properties": {
+    "schema_version": {"const": 2},
+    "event": {"enum": ["remember", "forget"]},
+    "id": {"type": "string", "pattern": "^(mem|evt)-[a-f0-9]{12}$"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "kind": {"type": "string"},
+    "scope": {"type": "string"},
+    "tags": {"type": "array", "items": {"type": "string"}},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "source": {"type": "string"},
+    "expires": {"type": ["string", "null"], "format": "date"},
+    "text": {"type": "string"},
+    "target_id": {"type": "string"},
+    "reason": {"type": "string"}
+  },
+  "allOf": [
+    {"if": {"properties": {"event": {"const": "remember"}}}, "then": {"required": ["kind", "scope", "confidence", "text", "content_hash"]}},
+    {"if": {"properties": {"event": {"const": "forget"}}}, "then": {"required": ["target_id", "reason"]}}
+  ],
+  "additionalProperties": true
+}

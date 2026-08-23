@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "name": "default",
+  "scope": "global",
+  "description": "Safe cross-repository defaults for the consecrating workspace.",
+  "path_markers": ["/projects/sandbox"],
+  "file_markers": [".git"],
+  "priorities": ["correctness", "current dependencies", "durable context", "reviewability"],
+  "rules": [
+    "Read existing code before proposing changes.",
+    "Prefer additive, backward-compatible interfaces.",
+    "Verify current package status before adding dependencies.",
+    "Persist decisions and corrections in AIBrain."
+  ],
+  "required_context": ["brain/identity.md", "memory/corrections.md", "brain/decisions/_index.md"],
+  "skill_preferences": ["context-compiler", "self-healing-reviewer", "evidence-research"]
+}
