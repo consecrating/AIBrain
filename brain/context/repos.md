@@ -34,16 +34,18 @@
 ### Claude-Power
 - **Path:** `/projects/sandbox/Claude-Power`
 - **GitHub:** `consecrating/Claude-Power`
-- **Status:** Active (16 skills installed)
+- **Status:** Active (16 packaged skills)
 - **Purpose:** Engineering skills for Kiro (token efficiency, memory, debugging, etc.)
-- **Installed to:** `/projects/.kiro/skills/` (merged)
+- **Combined ownership:** Canonical owner of the `token-efficiency` overlap
 
 ### All-Skills
 - **Path:** `/projects/sandbox/All-Skills`
 - **GitHub:** `consecrating/All-Skills`
-- **Status:** Active (44 skills installed)
+- **Status:** Active (45 packaged; combined v2 receipt owns 44)
 - **Purpose:** Design/UX/WordPress skills bundle
-- **Installed to:** `/projects/.kiro/skills/` (merged)
+- **Combined ownership:** One catalog-declared external owner: `token-efficiency` → Claude-Power
+- **Current sources:** `/projects/sandbox/All-Skills/catalog/skills.json` and `/projects/.kiro/all-skills-integration.json`
+- **Note:** All-Skills standalone installation still owns all 45; counts are informational, not health checks
 
 ### AIBrain (this repo)
 - **Path:** `/projects/sandbox/AIBrain`
