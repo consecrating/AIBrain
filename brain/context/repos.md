@@ -80,3 +80,14 @@
 2. **gsa adapter** normalizes analysis reports → GraphNode, IssueRecord, ActionCandidate
 3. **GOAAISEO** persists to ground-truth graph → reasons over it → acts → measures
 4. **AIBrain** remembers decisions, patterns, and learnings across ALL of this
+
+
+
+### TES-Krishna — Hotel Consulting Website
+- **Path:** `/projects/sandbox/TES-Krishna`
+- **GitHub:** `consecrating/TES-Krishna`
+- **Status:** Live (deployed to demo2.sanctify.co)
+- **Stack:** Next.js 16 + React 19 + Tailwind CSS 4 + TypeScript (static export)
+- **Purpose:** TES Hospitality brochure website — hotel consultants in Mangalore/Karkala
+- **Deployment:** FTP to shared hosting (Apache)
+- **Key insight:** PDF brochure → color extraction → AI-generated website → iterative redesign based on client feedback

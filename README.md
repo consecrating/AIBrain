@@ -43,6 +43,30 @@ AIBrain/
 │       ├── repos.md               # All repos, their purpose, how they connect
 │       └── environments.md        # Runtime details, deploy targets, env vars
 │
+├── learnings/                      # Validated insights from real project execution
+│   ├── _index.md                  # Master ledger + schema + consumption protocol
+│   ├── web-development/           # Frontend/fullstack patterns & frameworks
+│   │   ├── _index.md             # Category index + subcategories
+│   │   └── LRN-WEB-*.md          # Individual learnings
+│   ├── design-systems/            # UI/UX, color theory, typography, hierarchy
+│   │   ├── _index.md
+│   │   └── LRN-DES-*.md
+│   ├── deployment/                # Hosting, CI/CD, FTP, server configuration
+│   │   ├── _index.md
+│   │   └── LRN-DEP-*.md
+│   ├── tooling/                   # Build systems, dev tools, CLI workflows
+│   │   ├── _index.md
+│   │   └── LRN-TOOL-*.md
+│   ├── ai-patterns/              # AI-assisted development, automation
+│   │   ├── _index.md
+│   │   └── LRN-AI-*.md
+│   ├── seo/                      # Search optimization, crawling, indexing
+│   │   ├── _index.md
+│   │   └── LRN-SEO-*.md
+│   └── hospitality/              # Hotel industry domain knowledge
+│       ├── _index.md
+│       └── LRN-HOS-*.md
+│
 ├── memory/                         # Session-persistent memory (survives compaction)
 │   ├── active-task.md             # Current goal + constraints + next action
 │   ├── journal.md                 # Append-only log of significant events
