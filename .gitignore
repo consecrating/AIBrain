@@ -1,0 +1,17 @@
+# Session-specific working memory (don't commit transient state)
+memory/scratchpad.md
+memory/learnings-inbox.md
+
+# Feeds are generated (refresh.sh creates them)
+feeds/*.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
