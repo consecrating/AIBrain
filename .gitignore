@@ -1,6 +1,23 @@
-# Session-specific working memory (don't commit transient state)
+# ── PRIVATE WORKING MEMORY ──────────────────────────────────────────────────
+# This repository is PUBLIC. The AIBrain protocol instructs the agent to write
+# facts into these files on every significant event, so they accumulate real
+# project, client and decision detail. They must never be committed.
+#
+# Only the *.template.md seeds are tracked. scripts/install.sh copies a template
+# into place on first run, so a fresh clone still validates.
+memory/active-task.md
+memory/corrections.md
+memory/journal.md
 memory/scratchpad.md
 memory/learnings-inbox.md
+brain/decisions/_index.md
+
+# Credentials never belong in the brain at all — use the private vault.
+.env
+*.key
+*.pem
+.wp-auth
+secrets/
 
 # Feeds are generated (refresh.sh creates them)
 feeds/*.json

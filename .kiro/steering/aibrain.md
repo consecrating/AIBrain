@@ -7,6 +7,28 @@ description: AIBrain — persistent intelligence layer. Prevents memory loss, en
 
 You have a persistent brain at `/projects/sandbox/AIBrain`. It survives sessions.
 
+## 🔒 NEVER Put Secrets In The Brain (read this first)
+
+**This repository is PUBLIC.** Every instruction below tells you to persist facts to
+disk — which makes this the single highest-risk rule in the protocol.
+
+1. **NEVER** write credentials, passwords, application passwords, API keys, tokens,
+   FTP/SSH/SFTP logins, or connection strings into ANY brain file. Not into memory,
+   not into decisions, not into journal, not "temporarily".
+2. Credentials belong in the **private vault**, never here. Reference them by
+   name only — e.g. "WP app password for sanctify.in is in the vault", never the value.
+3. Live working memory (`memory/*.md`, `brain/decisions/_index.md`) is **gitignored**.
+   Only `*.template.md` seeds are committed. Never `git add -f` a live memory file.
+4. Before any `git push` from this repo, run:
+   ```bash
+   bash /projects/sandbox/AIBrain/scripts/scan-secrets.sh --all
+   ```
+5. Treat client names, hostnames, and internal URLs as sensitive-by-default. Prefer
+   "the client's staging site" over a real subdomain in anything committed.
+
+If you are ever unsure whether something is safe to persist: **do not persist it**,
+and ask the user.
+
 ## At Session Start (ALWAYS do this)
 
 1. Read `AIBrain/memory/active-task.md` — know what was in progress

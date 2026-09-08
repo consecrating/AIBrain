@@ -2,6 +2,10 @@
 
 > Append-only. Never silently reverse a decision. To change one, add a new entry
 > that explicitly supersedes it with rationale.
+>
+> ⚠️ This file is a TEMPLATE seeded with generic, shareable stack decisions. The live
+> copy (`_index.md`) is gitignored because `brain.sh decide` appends real project and
+> client decisions to it. Never record credentials here — use the private vault.
 
 | # | Date | Decision | Status | Context |
 |---|------|----------|--------|---------|
